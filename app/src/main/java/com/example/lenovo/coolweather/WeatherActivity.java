@@ -76,6 +76,8 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText = (TextView) findViewById(R.id.car_wash_text);
         sportText = (TextView) findViewById(R.id.sport_text);
         bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
+        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
 
         navButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,8 +86,6 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
 
-        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         if(weatherString != null){
@@ -96,7 +96,7 @@ public class WeatherActivity extends AppCompatActivity {
         }else{
             //无缓存时去服务器查询天气
             mWeatherId = getIntent().getStringExtra("weather_id");
-            weatherLayout.setVisibility(View.VISIBLE);
+            weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(mWeatherId);
         }
 
@@ -163,7 +163,7 @@ public class WeatherActivity extends AppCompatActivity {
      */
     private void showWeatherInfo(Weather weather){
         String cityName = weather.basic.cityName;
-        String updateTime = weather.basic.update.updateTime.split("")[1];
+        String updateTime = weather.basic.update.updateTime.split(" ")[1];
         String degree = weather.now.temperature+"℃";
         String weatherInfo = weather.now.more.info;
         titleCity.setText(cityName);
@@ -195,7 +195,7 @@ public class WeatherActivity extends AppCompatActivity {
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, AutoUpdateService.class);
-        startActivity(intent);
+        startService(intent);
     }
 
     /**
