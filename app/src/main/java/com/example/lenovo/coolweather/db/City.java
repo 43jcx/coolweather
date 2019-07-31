@@ -1,5 +1,9 @@
 package com.example.lenovo.coolweather.db;
 
+import android.view.View;
+
+import com.example.lenovo.coolweather.ChooseAreaFragment;
+
 import org.litepal.crud.DataSupport;
 
 /**
@@ -40,4 +44,6 @@ public class City extends DataSupport {
     public void setProvinceId(int provinceId){
         this.provinceId = provinceId;
     }
+
+
 }
